@@ -1,0 +1,150 @@
+<style>
+    /* Kurumsal Çözüm Koleji Tasarımı */
+    .lgs-container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .lgs-title { color: #8A1538; text-align: center; font-size: 24px; margin-bottom: 25px; font-weight: bold; }
+    .lgs-section-title { font-size: 16px; border-left: 4px solid #8A1538; padding-left: 10px; margin-top: 30px; margin-bottom: 15px; color: #333; font-weight: bold; }
+    
+    .lgs-ders-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .lgs-ders-adi { flex: 2; font-weight: bold; color: #444; font-size: 14px; }
+    .lgs-input-group { flex: 1; text-align: center; }
+    .lgs-input-group label { display: block; font-size: 11px; margin-bottom: 5px; color: #666; }
+    .lgs-input-group input { width: 55px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+    .lgs-net-kutusu input { background-color: #f9f9f9; font-weight: bold; color: #8A1538; border: 1px solid #8A1538; }
+
+    .lgs-form-grup { margin-bottom: 15px; margin-top: 15px; }
+    .lgs-form-grup label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; color: #333; }
+    .lgs-form-grup input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+    
+    .lgs-btn { background-color: #8A1538; color: white; border: none; padding: 12px 25px; font-size: 15px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold; }
+    .lgs-btn:hover { background-color: #6a0f29; }
+    .lgs-loading { display: none; text-align: center; color: #8A1538; font-weight: bold; margin-top: 15px; }
+</style>
+
+<div class="lgs-container">
+    <div class="lgs-title">LGS Net Hesaplama Formu</div>
+    
+    <div class="lgs-section-title">SÖZEL BÖLÜM – TOPLAM 50 SORU</div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">Türkçe (20 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_tr_d" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_tr_d', 'lgs_tr_y', 'lgs_tr_n', 'lgs_hidden_tr_n', 20)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_tr_y" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_tr_d', 'lgs_tr_y', 'lgs_tr_n', 'lgs_hidden_tr_n', 20)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_tr_n" readonly value="0.00"></div>
+    </div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">T.C. İnkılap (10 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_ink_d" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_ink_d', 'lgs_ink_y', 'lgs_ink_n', null, 10)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_ink_y" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_ink_d', 'lgs_ink_y', 'lgs_ink_n', null, 10)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_ink_n" readonly value="0.00"></div>
+    </div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">Din Kültürü (10 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_din_d" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_din_d', 'lgs_din_y', 'lgs_din_n', null, 10)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_din_y" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_din_d', 'lgs_din_y', 'lgs_din_n', null, 10)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_din_n" readonly value="0.00"></div>
+    </div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">Yabancı Dil (10 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_ing_d" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_ing_d', 'lgs_ing_y', 'lgs_ing_n', null, 10)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_ing_y" min="0" max="10" value="0" oninput="window.lgsHesapla('lgs_ing_d', 'lgs_ing_y', 'lgs_ing_n', null, 10)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_ing_n" readonly value="0.00"></div>
+    </div>
+
+    <div class="lgs-section-title">SAYISAL BÖLÜM – TOPLAM 40 SORU</div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">Matematik (20 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_mat_d" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_mat_d', 'lgs_mat_y', 'lgs_mat_n', 'lgs_hidden_mat_n', 20)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_mat_y" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_mat_d', 'lgs_mat_y', 'lgs_mat_n', 'lgs_hidden_mat_n', 20)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_mat_n" readonly value="0.00"></div>
+    </div>
+    <div class="lgs-ders-row">
+        <div class="lgs-ders-adi">Fen Bilimleri (20 Soru)</div>
+        <div class="lgs-input-group"><label>Doğru</label><input type="number" id="lgs_fen_d" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_fen_d', 'lgs_fen_y', 'lgs_fen_n', 'lgs_hidden_fen_n', 20)"></div>
+        <div class="lgs-input-group"><label>Yanlış</label><input type="number" id="lgs_fen_y" min="0" max="20" value="0" oninput="window.lgsHesapla('lgs_fen_d', 'lgs_fen_y', 'lgs_fen_n', 'lgs_hidden_fen_n', 20)"></div>
+        <div class="lgs-net-kutusu"><label>Net</label><input type="text" id="lgs_fen_n" readonly value="0.00"></div>
+    </div>
+
+    <div class="lgs-section-title">Bilgilerinizi Kaydedin</div>
+    <form id="lgsFormuPaneli" onsubmit="window.lgsGonder(event)">
+        <input type="hidden" name="TurkceNet" id="lgs_hidden_tr_n" value="0.00">
+        <input type="hidden" name="MatematikNet" id="lgs_hidden_mat_n" value="0.00">
+        <input type="hidden" name="FenNet" id="lgs_hidden_fen_n" value="0.00">
+        <input type="hidden" name="LgsPuani" id="lgs_hidden_puan" value="190.00">
+
+        <div class="lgs-form-grup">
+            <label>Öğrencinin Adı Soyadı</label>
+            <input type="text" name="OgrenciAd" required>
+        </div>
+        <div class="lgs-form-grup">
+            <label>Velinin Adı Soyadı</label>
+            <input type="text" name="VeliAd" required>
+        </div>
+        <div class="lgs-form-grup">
+            <label>Velinin Cep Telefonu</label>
+            <input type="tel" name="Telefon" placeholder="05XX XXX XX XX" required>
+        </div>
+        <button type="submit" class="lgs-btn" id="lgsSubmitBtn">Başvuruyu Gönder</button>
+        <div class="lgs-loading" id="lgsLoadingText">Verileriniz aktarılıyor, lütfen bekleyin...</div>
+    </form>
+</div>
+
+<script>
+    // Global nesneye bağlayarak Ventum'un silmesini engelliyoruz
+    window.lgsHesapla = function(dId, yId, nId, hId, maxSoru) {
+        var dInput = document.getElementById(dId);
+        var yInput = document.getElementById(yId);
+        var d = parseFloat(dInput.value) || 0;
+        var y = parseFloat(yInput.value) || 0;
+
+        if (d > maxSoru) { alert("Bu ders için maksimum doğru sayısı " + maxSoru + " olabilir!"); d = maxSoru; dInput.value = maxSoru; }
+        if (y > maxSoru) { alert("Bu ders için maksimum yanlış sayısı " + maxSoru + " olabilir!"); y = maxSoru; yInput.value = maxSoru; }
+        if ((d + y) > maxSoru) { alert("Doğru ve yanlışların toplamı " + maxSoru + " soru sayısını aşamaz!"); y = maxSoru - d; yInput.value = y; }
+        if (d < 0) { d = 0; dInput.value = 0; }
+        if (y < 0) { y = 0; yInput.value = 0; }
+
+        var n = d - (y / 3);
+        document.getElementById(nId).value = n.toFixed(2);
+        if(hId) document.getElementById(hId).value = n.toFixed(2);
+    };
+
+    window.lgsGonder = function(e) {
+        e.preventDefault();
+        var tr = parseFloat(document.getElementById('lgs_tr_n').value) || 0;
+        var ink = parseFloat(document.getElementById('lgs_ink_n').value) || 0;
+        var din = parseFloat(document.getElementById('lgs_din_n').value) || 0;
+        var ing = parseFloat(document.getElementById('lgs_ing_n').value) || 0;
+        var mat = parseFloat(document.getElementById('lgs_mat_n').value) || 0;
+        var fen = parseFloat(document.getElementById('lgs_fen_n').value) || 0;
+
+        var puan = 190 + (tr * 4) + (mat * 4) + (fen * 4) + (ink * 1) + (din * 1) + (ing * 1);
+        if (puan > 500) puan = 500;
+        if (puan < 100) puan = 100;
+        document.getElementById('lgs_hidden_puan').value = puan.toFixed(2);
+        
+        var scriptURL = 'https://script.google.com/macros/s/AKfycbxpsVgbZhBGvYC_-woHOS3uA2f8PDPHGaYY6Rq6v9ENZTvxb8pqZKya7Tb1RRHKex0hKg/exec';
+        var sBtn = document.getElementById('lgsSubmitBtn');
+        var lText = document.getElementById('lgsLoadingText');
+        
+        sBtn.disabled = true;
+        lText.style.display = 'block';
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(document.getElementById('lgsFormuPaneli'))})
+          .then(function() {
+              alert('LGS Başvurunuz başarıyla kaydedilmiştir. Teşekkür ederiz!');
+              sBtn.disabled = false;
+              lText.style.display = 'none';
+              document.getElementById('lgsFormuPaneli').reset();
+              document.getElementById('lgs_tr_n').value = "0.00";
+              document.getElementById('lgs_ink_n').value = "0.00";
+              document.getElementById('lgs_din_n').value = "0.00";
+              document.getElementById('lgs_ing_n').value = "0.00";
+              document.getElementById = "0.00";
+              document.getElementById('lgs_mat_n').value = "0.00";
+              document.getElementById('lgs_fen_n').value = "0.00";
+          })
+          .catch(function() {
+              alert('Aktarım sırasında bir hata oldu.');
+              sBtn.disabled = false;
+              lText.style.display = 'none';
+          });
+    };
+</script>
