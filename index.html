@@ -21,6 +21,8 @@
     
     /* Kurumsal Onay Bandı */
     .lgs-success-banner { display: none; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; margin-top: 20px; font-size: 15px; }
+    /* Form İçi Hata Şeridi */
+    .lgs-error-banner { display: none; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; text-align: center; font-weight: bold; margin-top: 10px; font-size: 13px; }
 </style>
 
 <div class="lgs-container">
@@ -83,8 +85,9 @@
         </div>
         <div class="lgs-form-grup">
             <label>Velinin Cep Telefonu</label>
-            <!-- 14 Karakter sınırı (maxlength) ve sadece sayı girmeyi tetikleyen ayar eklendi -->
-            <input type="tel" id="lgs_veli_tel" name="Telefon" placeholder="05XX XXX XX XX" maxlength="14" required>
+            <!-- input type text yapıldı ve oninput ile otomatik formatlayıcı bağlandı -->
+            <input type="text" id="lgs_veli_tel" name="Telefon" placeholder="05XX XXX XX XX" maxlength="14" oninput="window.lgsTelFormat(this)" required>
+            <div class="lgs-error-banner" id="lgsTelError">Lütfen telefon numarasını eksiksiz (11 hane) giriniz!</div>
         </div>
         <button type="submit" class="lgs-btn" id="lgsSubmitBtn">Başvuruyu Gönder</button>
         <div class="lgs-loading" id="lgsLoadingText">Verileriniz aktarılıyor, lütfen bekleyin...</div>
@@ -95,6 +98,28 @@
 </div>
 
 <script>
+    // Otomatik Telefon Formatlayıcı (05XX XXX XX XX şablonu)
+    window.lgsTelFormat = function(input) {
+        var num = input.value.replace(/\D/g, ''); // Sayı dışındaki her şeyi temizle
+        if (num.length > 11) num = num.substring(0, 11); // Maksimum 11 hane (05xx...)
+        
+        var formated = "";
+        if (num.length > 0) {
+            formated += num.substring(0, 4); // 05XX
+            if (num.length > 4) {
+                formated += " " + num.substring(4, 7); // 05XX XXX
+                if (num.length > 7) {
+                    formated += " " + num.substring(7, 9); // 05XX XXX XX
+                    if (num.length > 9) {
+                        formated += " " + num.substring(9, 11); // 05XX XXX XX XX
+                    }
+                }
+            }
+        }
+        input.value = formated;
+        document.getElementById('lgsTelError').style.display = 'none'; // Yazarken hatayı gizle
+    };
+
     window.lgsHesapla = function(dId, yId, nId, hId, maxSoru) {
         var dInput = document.getElementById(dId);
         var yInput = document.getElementById(yId);
@@ -109,12 +134,21 @@
 
         var n = d - (y / 3);
         document.getElementById(nId).value = n.toFixed(2);
-        if(hId) document.getElementById(hId).value = n.toFixed(2); 
-        
+        if(hId) document.getElementById(hId).value = n.toFixed(2);
     };
 
     window.lgsGonder = function(e) {
         e.preventDefault();
+        
+        // Müdürün istediği Tam Numara Kontrolü
+        var telInput = document.getElementById('lgs_veli_tel');
+        var errBanner = document.getElementById('lgsTelError');
+        if (telInput.value.length < 14) {
+            errBanner.style.display = 'block'; // Kırmızı hata bandını aç
+            telInput.focus();
+            return false; // Form gönderimini engelle
+        }
+        
         var tr = parseFloat(document.getElementById('lgs_tr_n').value) || 0;
         var ink = parseFloat(document.getElementById('lgs_ink_n').value) || 0;
         var din = parseFloat(document.getElementById('lgs_din_n').value) || 0;
@@ -135,6 +169,7 @@
         sBtn.disabled = true;
         lText.style.display = 'block';
         sBanner.style.display = 'none';
+        errBanner.style.display = 'none';
         
         fetch(scriptURL, { method: 'POST', body: new FormData(document.getElementById('lgsFormuPaneli'))});
         
